@@ -1,0 +1,44 @@
+#! /bin/csh -f
+
+# 1 = mex include path
+# 2 = setup filepath
+# 3 = input filepath
+# 4 = option
+# 5 = intermediate filepath
+# 6 = output filepath
+
+source $2
+
+if ($CUDA != 1) exit 0
+
+if (! -e $3) then
+    echo cannot find $3
+    exit 0
+endif
+
+if ($4 == compile) then
+    nvcc -cuda -I $1 -use_fast_math -o $5 $3
+else if ($4 == preprocess) then
+    nvcc -E -I $1 -use_fast_math -o $5 $3
+else if ($4 == info) then
+    nvcc -cubin -I $1 -use_fast_math -o $5 $3
+endif
+
+if (-e $5) then
+    echo CUDA compilation successful
+else
+    echo CUDA compilation failed
+    exit 0
+endif
+
+if ($4 == compile) then
+    mex -output $6 $5 $CUDA_LINK_LIB
+else
+    exit 0
+endif
+
+if (-e $6) then
+    echo MEX compilation of CUDA output successful
+else
+    echo MEX compilation of CUDA output failed
+endif

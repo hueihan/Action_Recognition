@@ -1,0 +1,35 @@
+% A Biologically inspired System for action recognition.
+%
+% Aug. 2011.
+% Authors: Hueihan Jhuang (hueihan@mit.edu) 
+% ---------------------------------------------------------------------
+
+% -----------------source ---------------------------------------
+% source/hj_model_multiscale.m           function for building hjpkg
+% source/hjpkg                           the core of the package, a hierachical model developed based on CNS. 
+                                         It turns a video clip into C2 representation.
+                                         hjpkg is not documted, but it is similar to  HMAX package
+                                         http://cbcl.mit.edu/jmutch/cns/hmax/doc/
+% source/feature_computation             a script demonstrating how to use hjpkg
+% source/classification                  a script demonstrating how to use svm_hmm
+% source/sample_patches                  sample c1 patches from training data.
+% source/get_X_split                     get the training/testing clip filenames from the dataset X
+% source/setting_X                       parameters for the dataset X
+% source/utils/openCVread                a c++ file that reads compressed videos using opencv
+% source/utils/to_svm_light              a c++ file that writes C2 vectors into the input format of svm_hmm
+
+
+% -----------------third_party ---------------------------------------
+% third_partty/cns                       framework written by Jim Mutch & Ulf Knoblich for the fast simulation of cortically-organized networks
+                                         http://cbcl.mit.edu/jmutch/cns/
+% third_party/svm_hmm                    a sequential tagging SVM written by Thorsten Joachims for classifying video sequences
+                                         http://www.cs.cornell.edu/People/tj/svm_light/svm_hmm.html
+% -----------------data ---------------------------------------
+% data/WIS/video                         dataset download from http://www.wisdom.weizmann.ac.il/~vision/SpaceTimeActions.html
+                                         all the videos are compressed as mpeg4
+% data/HMDB/video                        place here the dataset download from 
+                                         http://serre-lab.clps.brown.edu/resources/HMDB/index.htm
+% data/HMDB/testTrainMulti_7030_splits/  contains the three splits generated for HMDB 
+
+
+

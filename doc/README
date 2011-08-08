@@ -1,0 +1,61 @@
+
+
+DESCRIPTION
+
+This package contains the Matlab+C implementation of a model for action
+recognition. Taking a clip as input, the model computes a C2 vector for 
+each frame, SVMHMM is traied to classify each frame and the label for a
+clip is determined as the majority of predicted labels for all the frames.
+
+This system models the organization of human visual pathway with four
+feedforward hierachical stages, each specifically models the neuronal
+properties of V1 and MT, two cortical areas which have been known to
+process motion informaion by being selective to spatial frequency, temporal
+frequency, direction and speed of moving stimuli.
+
+
+Authors: Hueihan Jhuang (hueiha@mit.edu) 
+___________________________________________________________________________
+Tested Configuration
+1 Matlab 2008b or higher
+2 CUDA 3.2
+3 NVIDIA GPU that supports the CUDA API
+4 Opencv 2.2 or higher
+
+Installation of cns
+1 See http://cbcl.mit.edu/jmutch/cns/doc/install.html for the instructions
+2 open third_party/cns/scripts/linux/setup
+  edit the line  
+  set CUDA_LINK_LIB = /usr/local/cuda/lib/libcudart.so
+  to point to your cuda library
+3 run setup_cns.m
+
+Installation of SVMHMM
+1 The binaries for svmhmm was downloaded from http://www.cs.cornell.edu/People/tj/svm_light/svm_hmm.html
+  If it doesn't work, download the source code and coompile it.
+
+
+Compilation of mex files 
+1 Edit the variable 'opencv_path' in compile.m and run compile
+
+___________________________________________________________________________
+USING THE SOFTWARE
+
+1 After the installation is complete, run demo.m
+2 Using 'setting_WIS', the model performs 100% on the WIS dataset
+3 To train/test on HMDB, please download the dataset from http://serre-lab.clps.brown.edu/resources/HMDB/index.htm
+  and use 'setting_HMDB'
+4 If you want to test on other datasets X, create your own 'setting_X' and optimize parameters such as scale, speed, patchsize, etc.
+___________________________________________________________________________
+REFERENCE
+If you use the software please cite
+H. Jhuang, T. Serre, L. Wolf and T. Poggio.
+   A Biologically Inspired System for Action Recognition.
+   IEEE International Conference on Computer Vision
+   (ICCV), 2007. 
+
+If you use the HMDB, please cite
+H. Kuhne, H. Jhuang, E. Garrote, T. Poggio and T. Serre. 
+   HMDB: A Large Video Database for Human Motion Recognition.
+   IEEE International Conference on Computer Vision
+   (ICCV), 2011. 

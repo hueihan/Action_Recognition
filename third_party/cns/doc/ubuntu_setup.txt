@@ -1,0 +1,67 @@
+TO INSTALL CUDA ON AN UBUNTU CLUSTER SERVER:
+
+Follow NVIDIA's Ubuntu Linux instructions to install the driver and toolkit (the SDK is not needed for CNS).  Expect
+difficulties with making sure the driver is running and that the necessary /dev/nv* devices are being created at system
+startup.  Instructions (1-3) below will sort that out.
+
+(1) Set Ubuntu to boot to console mode only.
+
+    > sudo vi /etc/X11/default-display-manager
+    * Comment out the line containing "gdm".
+    * Create a new line consisting of the word "false" (no quotes).
+
+(2) Create a script that will create the necessary /dev/nv* devices on startup.
+
+    > cd /etc/init.d
+    > sudo vi nvidia_create_devices
+    * Paste in the script below.
+    * Edit the script to make sure the number of "nvidia-smi -g" commands matches the number of devices.
+    * Save the script.
+    > sudo chmod a+x nvidia_create_devices
+
+(3) Make sure the script gets run at startup.
+
+    > sudo update-rc.d nvidia_create_devices defaults
+
+(4) Make sure CNS can find the NVCC compiler.  Insert the following line into your login script.
+
+    set path = ( $path /usr/local/cuda/bin )
+
+(5) Make sure compiled CNS code can find the CUDA runtime libraries.  Insert the following line into your login script.
+
+    setenv LD_LIBRARY_PATH /usr/local/cuda/lib
+
+========================================================================================================================
+== Script: nvidia_create_devices                                                                                      ==
+========================================================================================================================
+
+#!/bin/bash
+
+PATH=$PATH:/usr/local/cuda/bin
+
+modprobe nvidia
+
+if [ "$?" -eq 0 ]; then
+
+# Count the number of NVIDIA controllers found.
+N3D=`/usr/bin/lspci | grep -i NVIDIA | grep "3D controller" | wc -l`
+NVGA=`/usr/bin/lspci | grep -i NVIDIA | grep "VGA compatible controller" | wc -l`
+
+N=`expr $N3D + $NVGA - 1`
+for i in `seq 0 $N`; do
+mknod -m 666 /dev/nvidia$i c 195 $i;
+done
+
+mknod -m 666 /dev/nvidiactl c 195 255
+
+nvidia-smi --loop-continuously --interval=60 --filename=/var/log/nvidia-smi.log &
+nvidia-smi -g 0 -c 1
+nvidia-smi -g 1 -c 1
+nvidia-smi -g 2 -c 1
+nvidia-smi -g 3 -c 1
+
+else
+exit 1
+fi
+
+========================================================================================================================

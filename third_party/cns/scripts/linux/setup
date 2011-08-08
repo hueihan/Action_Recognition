@@ -1,0 +1,5 @@
+#! /bin/csh -f
+
+set          CUDA = 1
+set CUDA_LINK_LIB = /gpfs/runtime/opt/cuda/3.2.16/lib64/libcudart.so
+

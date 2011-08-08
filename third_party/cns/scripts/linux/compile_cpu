@@ -1,0 +1,26 @@
+#! /bin/csh -f
+
+# 1 = mex include path
+# 2 = setup filepath
+# 3 = input filepath
+# 4 = option
+# 5 = output filepath
+
+source $2
+
+if (! -e $3) then
+    echo cannot find $3
+    exit 0
+endif
+
+if ($4 == compile) then
+    mex -output $5 $3
+else if ($4 == preprocess) then
+    gcc -E -I $1 $3 > $5
+endif
+
+if (-e $5) then
+    echo CPU compilation successful
+else
+    echo CPU compilation failed
+endif
