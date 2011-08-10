@@ -13,7 +13,7 @@
     %****************************************************************************************************
     % Find training indices and sample c1 patches
     %**************************************************************************************************** 
-      [Training_set, Testing_set]= feval(sprintf('get_%s_split',dataset_name),isplit);
+      [Training_set, Testing_set]= feval(sprintf('get_%s_split',dataset_name),isplit,splitdir);
       naction = length(saction);
     %****************************************************************************************************
     % collecting training data
