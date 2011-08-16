@@ -5,14 +5,14 @@ function [train_fnames,test_fnames] = get_WIS_split(isplit,splitdir)
     train_actor_id = setdiff(1:length(sactor),isplit);
 
     for isa = 1:length(saction)
-        for it = 1:length(test_actor_id);
-            test_fnames{isa}{it} = sprintf('%s_%s.avi',sactor{it},saction{isa});
+        for it = 1:length(test_actor_id)
+            test_fnames{isa}{it} = sprintf('%s_%s.avi',sactor{test_actor_id(it)},saction{isa});
         end
     end
 
     for isa = 1:length(saction)
-        for it = 1:length(train_actor_id);
-            train_fnames{isa}{it} = sprintf('%s_%s.avi',sactor{it},saction{isa});
+        for it = 1:length(train_actor_id)
+            train_fnames{isa}{it} = sprintf('%s_%s.avi',sactor{train_actor_id(it)},saction{isa});
         end
     end
 
